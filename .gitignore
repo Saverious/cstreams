@@ -1,5 +1,6 @@
 # Custom folders
 my-test/
+.vscode/
 
 # custom files
 *.txt
