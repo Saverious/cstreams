@@ -24,9 +24,10 @@ typedef struct {
 typedef struct buff_info{
     char* buff_ptr;
     size_t size;
+    int err;
 }buffer_info;
 
 buffer_info* make_rstream(char* file_path); // create a read stream
-char* read_stream(rstream* args);    // read from the stream
+buffer_info* read_stream(rstream* args);    // read from the stream
 
 #endif

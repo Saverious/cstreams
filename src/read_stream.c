@@ -20,16 +20,33 @@ buffer_info* make_rstream(char* file_path) {
     buffer_info* buff = (buffer_info*) malloc(sizeof(buffer_info));
     buff->buff_ptr = buffer;
     buff->size = mem_size;
+    buff->err = 0;
 
     return buff;
 }
 
-char* read_stream(rstream* args) {
+buffer_info* read_stream(rstream* args) {
+    buffer_info* binfo = (buffer_info*) malloc(sizeof(buffer_info));
+    if(binfo == NULL) {
+        perror("could not allocate memory");
+        exit(EXIT_FAILURE);
+    }
+
+    buffer_info* err_buff = (buffer_info*) malloc(sizeof(buffer_info));
+    if(err_buff == NULL) {
+        perror("could not allocate memory");
+        exit(EXIT_FAILURE);
+    }
+
+    err_buff->buff_ptr = NULL;
+    err_buff->size = (size_t) -1;
+    err_buff->err = -1;
+    
     if(stream_buffer_ptr == NULL && stream_buffer_size == 0) {
         fptr = fopen(args->file_path, "r");
         if(fptr == NULL) {
             perror("read_stream()->Invalid file path");
-            return "ERR";
+            return err_buff;
         }
 
         buffer_info* buff = make_rstream(args->file_path);
@@ -38,17 +55,22 @@ char* read_stream(rstream* args) {
     }
 
     size_t bytes_read = fread(stream_buffer_ptr, 1, stream_buffer_size, fptr);
+    binfo->buff_ptr = stream_buffer_ptr;
+    binfo->size = bytes_read;
+    binfo->err = 0;
+
     if(bytes_read < stream_buffer_size) {
         if(feof(fptr)) {  // EOF reached
             fclose(fptr);
             fptr = NULL;
-            return stream_buffer_ptr;
+            return binfo;
         }else {
             perror("read_stream()-> Error in file");
             free(stream_buffer_ptr);
-            return "ERR";
+            free(binfo);
+            return err_buff;
         }
     }
 
-    return stream_buffer_ptr;
+    return binfo;
 }
