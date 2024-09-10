@@ -1,3 +1,9 @@
+# Custom folders
+my-test/
+
+# custom files
+arch.txt
+
 # Prerequisites
 *.d
 
