@@ -21,7 +21,7 @@ typedef struct {
     size_t buff_size;
 }rstream;
 
-typedef struct buff_info{
+typedef struct {
     char* buff_ptr;
     size_t size;
     int err;
