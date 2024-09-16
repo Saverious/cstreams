@@ -7,14 +7,14 @@ CFLAGS = -I./src/include -Wall
 # Source files
 SRCS = \
 		src/read_stream.c \
-		src/utils/utils.c \
-		test/read_stream.c
+		test/rstream1.c \
+		test/rstream2.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)
 
 # Output executable
-TARGET = read_stream_test
+TARGET = rstream
 
 # Default rule to compile the program
 all: $(TARGET)

@@ -16,18 +16,18 @@
 #include <stddef.h>
 
 
-typedef struct {
-    char* file_path;
-    size_t buff_size;
-}rstream;
+#define INTERNAL_BUFFER_SIZE (16 * 1024)
 
-typedef struct {
-    char* buff_ptr;
-    size_t size;
-    int err;
-}buffer_info;
+// enum for read_stream_flow() return values
+enum RSTREAM_RET {
+    CONTINUE,
+    END_OF_FILE,
+    ERR
+};
 
-buffer_info* make_rstream(char* file_path); // create a read stream
-buffer_info* read_stream(rstream* args);    // read from the stream
+int is_file_descriptor();
+char* make_buffer(size_t size);
+int make_rstream(const char* file_path);
+int read_stream_flow(const char* file_path, char* buffer);    // read from the stream
 
 #endif
